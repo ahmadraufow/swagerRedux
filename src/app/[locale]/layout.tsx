@@ -4,8 +4,7 @@ import "./globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/src/i18n/routing";
-import Link from "next/link";
-import LangSwitch from "@/src/components/langSwitch";
+import Navigation from "@/src/components/Navigation";
 
 import Providers from "@/src/providers/Provider";
 
@@ -39,18 +38,21 @@ export default async function LocaleLayout({ children, params }: Props) {
   {
     return (
       <html
-        lang="en"
+        lang={locale}
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
-        <body className="min-h-full flex flex-col">
+        <body className="min-h-screen bg-neutral-50 dark:bg-neutral-950 font-sans flex flex-col text-neutral-900 dark:text-neutral-50 transition-colors duration-300">
           <Providers>
-
-          <NextIntlClientProvider>
-            <LangSwitch />
-            <Link href={"/"}>Home</Link>
-            <Link href={"/about"}>About</Link>
-            {children}
-          </NextIntlClientProvider>
+            <NextIntlClientProvider>
+              <Navigation />
+              <main className="flex-grow flex flex-col">
+                {children}
+              </main>
+              {/* Simple Footer */}
+              <footer className="py-6 text-center text-neutral-500 dark:text-neutral-400 text-sm border-t border-neutral-200 dark:border-neutral-800">
+                © {new Date().getFullYear()} Our Platform. All rights reserved.
+              </footer>
+            </NextIntlClientProvider>
           </Providers>
         </body>
       </html>
